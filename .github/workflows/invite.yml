@@ -1,0 +1,19 @@
+name: InvitationLabel
+on:
+  issues:
+    types:
+      - labeled
+
+jobs:
+  build:
+    if:  github.event.label.name == 'approved'
+    name: Add collaborator!
+    runs-on: ubuntu-latest
+    steps:
+      - uses: blackgirlbytes/invite-collaborator-action@main
+        name: Perform invitation action
+        env:
+          # REQUIRED
+          INVITATION_TOKEN: ${{ secrets.INVITE_COLLABORATORS }}
+          # OPTIONAL
+          ORG: false

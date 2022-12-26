@@ -1,0 +1,8 @@
+name: 'Invite Collaborator Action'
+description: 'Invite a new collaborator to repo if they open an issue requesting to join.'
+runs:
+  using: 'node16'
+  main: 'index.js'
+branding:
+  color: 'purple'
+  icon: 'user-plus'
