@@ -122,7 +122,7 @@ async function run() {
 
     // get comment
     const issueTitle = github.context.payload.issue.title;
-    const regex = /(?<=@)(.*?)(?=\s)/g;
+    const regex = /(?<=@)[a-z0-9-]+/i;
     const thisUsername = issueTitle.match(regex)[0];
     const thisRepo = github.context.payload.repository.name;
     const thisOwner = github.context.payload.repository.owner.login;
