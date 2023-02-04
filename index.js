@@ -1,6 +1,6 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
-import { Octokit } from "octokit";
+const { Octokit } = require("@octokit");
 const { createAppAuth } = require("@octokit/auth-app");
 
 async function checkCollaborators(octokit, thisOwner, thisRepo, thisUsername) {
