@@ -178,7 +178,7 @@ async function run() {
       // add label to issue
       await addLabel(octokit, workflowOwner, workflowRepo, thisIssueNumber, label);
       // close issue
-      await closeIssue(octokit, thisOwner, thisRepo, thisIssueNumber);
+      await closeIssue(octokit, workflowOwner, workflowRepo, thisIssueNumber);
     } else if (isUserCollaborator == "already collaborator") {
       const comment = `@${thisUsername} is already a member of this repository.`;
       const label = "duplicate request";
