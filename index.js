@@ -1,6 +1,6 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
-const { Octokit } = require("@octokit");
+const { Octokit } = require("octokit");
 const { createAppAuth } = require("@octokit/auth-app");
 
 async function checkCollaborators(octokit, thisOwner, thisRepo, thisUsername) {
@@ -35,11 +35,11 @@ async function addCollaborator(octokit, thisOwner, thisRepo, thisUsername) {
   } catch (error) {
     console.log(
       "ERROR: " +
-        error.message +
-        " occurred at " +
-        error.fileName +
-        ":" +
-        error.lineNumber
+      error.message +
+      " occurred at " +
+      error.fileName +
+      ":" +
+      error.lineNumber
     );
   }
 }
@@ -61,11 +61,11 @@ async function addComment(
   } catch (error) {
     console.log(
       "ERROR: " +
-        error.message +
-        " occurred at " +
-        error.fileName +
-        ":" +
-        error.lineNumber
+      error.message +
+      " occurred at " +
+      error.fileName +
+      ":" +
+      error.lineNumber
     );
   }
 }
@@ -81,11 +81,11 @@ async function closeIssue(octokit, thisOwner, thisRepo, thisIssueNumber) {
   } catch (error) {
     console.log(
       "ERROR: " +
-        error.message +
-        " occurred at " +
-        error.fileName +
-        ":" +
-        error.lineNumber
+      error.message +
+      " occurred at " +
+      error.fileName +
+      ":" +
+      error.lineNumber
     );
   }
 }
@@ -101,11 +101,11 @@ async function addLabel(octokit, thisOwner, thisRepo, thisIssueNumber, label) {
   } catch (error) {
     console.log(
       "ERROR: " +
-        error.message +
-        " occurred at " +
-        error.fileName +
-        ":" +
-        error.lineNumber
+      error.message +
+      " occurred at " +
+      error.fileName +
+      ":" +
+      error.lineNumber
     );
   }
 }
@@ -113,21 +113,21 @@ async function addLabel(octokit, thisOwner, thisRepo, thisIssueNumber, label) {
 async function run() {
   try {
     // create Octokit client
-  const octokit = new Octokit({
-    authStrategy: createAppAuth,
-    auth: {
-      appId: process.env.APP_ID,
-      privateKey: process.env.PRIVATE_KEY,
-      oauth: {
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
+    const octokit = new Octokit({
+      authStrategy: createAppAuth,
+      auth: {
+        appId: process.env.APP_ID,
+        privateKey: process.env.PRIVATE_KEY,
+        oauth: {
+          clientId: process.env.CLIENT_ID,
+          clientSecret: process.env.CLIENT_SECRET,
+        },
+        webhooks: {
+          secret: process.env.WEBHOOK_SECRET,
+        },
+        installationId: process.env.INSTALLATION_ID
       },
-      webhooks: {
-        secret: process.env.WEBHOOK_SECRET,
-      },
-      installationId: process.env.INSTALLATION_ID
-    },
-  });
+    });
     // if (!thisToken) {
     //   console.log("ERROR: Token was not retrieved correctly and is falsy.");
     //   core.setFailed("Error: token was not correctly interpreted");
@@ -146,11 +146,11 @@ async function run() {
 
     console.log(
       "Parsed event values:\n\tRepo: " +
-        thisRepo +
-        "\n\tUsername of commenter: " +
-        thisUsername +
-        "\n\tRepo Owner: " +
-        thisOwner
+      thisRepo +
+      "\n\tUsername of commenter: " +
+      thisUsername +
+      "\n\tRepo Owner: " +
+      thisOwner
     );
 
     // check to make sure commenter is not owner (gives big error energy)
@@ -187,11 +187,11 @@ async function run() {
   } catch (error) {
     console.log(
       "ERROR: " +
-        error.message +
-        " occurred at " +
-        error.fileName +
-        ":" +
-        error.lineNumber
+      error.message +
+      " occurred at " +
+      error.fileName +
+      ":" +
+      error.lineNumber
     );
     console.log("Full error: " + error);
     core.setFailed(error.message);
