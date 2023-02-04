@@ -19,6 +19,8 @@
   "homepage": "https://github.com/blackgirlbytes/invite-collaborator-action#readme",
   "dependencies": {
     "@actions/core": "^1.10.0",
-    "@actions/github": "^5.1.1"
+    "@actions/github": "^5.1.1",
+    "@octokit/auth-app": "^4.0.9",
+    "octokit": "^2.0.14"
   }
 }

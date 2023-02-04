@@ -1,5 +1,7 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
+import { Octokit } from "octokit";
+const { createAppAuth } = require("@octokit/auth-app");
 
 async function checkCollaborators(octokit, thisOwner, thisRepo, thisUsername) {
   let returnVal = "not a collaborator";
@@ -111,14 +113,28 @@ async function addLabel(octokit, thisOwner, thisRepo, thisIssueNumber, label) {
 async function run() {
   try {
     // create Octokit client
-    const thisToken = process.env.INVITATION_TOKEN;
-    if (!thisToken) {
-      console.log("ERROR: Token was not retrieved correctly and is falsy.");
-      core.setFailed("Error: token was not correctly interpreted");
-      console.log("was it received");
-    }
+  const octokit = new Octokit({
+    authStrategy: createAppAuth,
+    auth: {
+      appId: process.env.APP_ID,
+      privateKey: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
+      oauth: {
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+      },
+      webhooks: {
+        secret: process.env.WEBHOOK_SECRET,
+      },
+      installationId: process.env.INSTALLATION_ID
+    },
+  });
+    // if (!thisToken) {
+    //   console.log("ERROR: Token was not retrieved correctly and is falsy.");
+    //   core.setFailed("Error: token was not correctly interpreted");
+    //   console.log("was it received");
+    // }
 
-    const octokit = new github.getOctokit(thisToken);
+    // const octokit = new github.getOctokit(thisToken);
 
     // get comment
     const issueTitle = github.context.payload.issue.title;
