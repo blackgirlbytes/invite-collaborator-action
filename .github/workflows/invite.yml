@@ -14,6 +14,11 @@ jobs:
         name: Perform invitation action
         env:
           # REQUIRED
-          INVITATION_TOKEN: ${{ secrets.INVITE_COLLABORATORS }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          APP_ID: ${{ secrets.APP_ID }}
+          CLIENT_SECRET:  ${{ secrets.CLIENT_SECRET }}
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          INSTALLATION_ID:  ${{ secrets.INSTALLATION_ID }}
           # OPTIONAL
           ORG: false
