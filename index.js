@@ -31,6 +31,7 @@ async function addCollaborator(octokit, thisOwner, thisRepo, thisUsername) {
       owner: thisOwner,
       repo: thisRepo,
       username: thisUsername,
+      permission: 'read'
     });
   } catch (error) {
     console.log(
