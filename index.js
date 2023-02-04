@@ -144,6 +144,8 @@ async function run() {
     const thisRepo = 'maintainers';
     const thisOwner = 'community';
     const thisIssueNumber = github.context.payload.issue.number;
+    const workflowRepo = github.context.payload.repository.name;
+    const workflowOwner = github.context.payload.repository.owner.login;
 
     console.log(
       "Parsed event values:\n\tRepo: " +
@@ -172,18 +174,18 @@ async function run() {
       // add comment to issue
       const comment = `@${thisUsername} has been added as a member of this repository. Please check your email or notifications for an invitation.`;
       const label = "collaborator added";
-      await addComment(octokit, thisOwner, thisRepo, thisIssueNumber, comment);
+      await addComment(octokit, workflowOwner, workflowRepo, thisIssueNumber, comment);
       // add label to issue
-      await addLabel(octokit, thisOwner, thisRepo, thisIssueNumber, label);
+      await addLabel(octokit, workflowOwner, workflowRepo, thisIssueNumber, label);
       // close issue
       await closeIssue(octokit, thisOwner, thisRepo, thisIssueNumber);
     } else if (isUserCollaborator == "already collaborator") {
       const comment = `@${thisUsername} is already a member of this repository.`;
       const label = "duplicate request";
-      await addComment(octokit, thisOwner, thisRepo, thisIssueNumber, comment);
+      await addComment(octokit, workflowOwner, workflowRepo, thisIssueNumber, comment);
       // add label to issue
-      await addLabel(octokit, thisOwner, thisRepo, thisIssueNumber, label);
-      await closeIssue(octokit, thisOwner, thisRepo, thisIssueNumber);
+      await addLabel(octokit, workflowOwner, workflowRepo, thisIssueNumber, label);
+      await closeIssue(octokit, workflowOwner, workflowRepo, thisIssueNumber);
     }
   } catch (error) {
     console.log(
