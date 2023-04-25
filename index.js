@@ -24,6 +24,15 @@ async function checkCollaborators(octokit, thisOwner, thisRepo, thisUsername) {
   }
   return returnVal;
 }
+// Utility function to wait for a specified duration (in seconds)
+function waitForRateLimitReset(durationInSeconds) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, durationInSeconds * 1000);
+  });
+}
+
 
 async function addCollaborator(octokit, thisOwner, thisRepo, thisUsername) {
   try {
@@ -34,14 +43,25 @@ async function addCollaborator(octokit, thisOwner, thisRepo, thisUsername) {
       permission: 'read'
     });
   } catch (error) {
-    console.log(
-      "ERROR: " +
-      error.message +
-      " occurred at " +
-      error.fileName +
-      ":" +
-      error.lineNumber
-    );
+    if (error.status === 403 && error.headers['x-ratelimit-remaining'] === '0') {
+      // Rate limit exceeded, wait for reset and retry
+      const rateLimitResetTime = error.headers['x-ratelimit-reset'];
+      const currentTime = Math.floor(Date.now() / 1000);
+      const waitTimeInSeconds = rateLimitResetTime - currentTime;
+      console.log(`Rate limit exceeded. Waiting for ${waitTimeInSeconds} seconds before retrying.`);
+      await waitForRateLimitReset(waitTimeInSeconds);
+      // Retry the request after waiting
+      return addCollaborator(octokit, thisOwner, thisRepo, thisUsername);
+    } else {
+      console.log(
+        "ERROR: " +
+        error.message +
+        " occurred at " +
+        error.fileName +
+        ":" +
+        error.lineNumber
+      );
+    }
   }
 }
 
